@@ -2,7 +2,7 @@ import { useNavigate } from 'react-router-dom'
 import { Users } from 'lucide-react'
 import { Card, CardContent } from '@/components/ui/card'
 import { OrgTypeBadge } from './OrgTypeBadge'
-import { formatDate } from '@/lib/utils'
+import { formatDate, cn } from '@/lib/utils'
 import type { Organization } from '@/types'
 
 interface OrgCardProps {
@@ -31,7 +31,10 @@ export function OrgCard({ org }: OrgCardProps) {
           </div>
           <p className="text-sm text-muted-foreground">Created {formatDate(org.created_at)}</p>
         </div>
-        <div className="flex items-center gap-1 text-sm text-muted-foreground">
+        <div className={cn(
+          "flex items-center gap-1 text-sm",
+          (org.member_count ?? 0) > 0 ? "text-green-500 font-medium" : "text-muted-foreground"
+        )}>
           <Users className="h-4 w-4" />
           <span>{org.member_count ?? 0}</span>
         </div>
