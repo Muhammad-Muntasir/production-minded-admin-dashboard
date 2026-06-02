@@ -41,6 +41,16 @@ CREATE POLICY "members_select_own_org"
     )
   );
 
+CREATE POLICY "members_delete_own_org"
+  ON public.organization_members FOR DELETE
+  USING (
+    EXISTS (
+      SELECT 1 FROM public.organizations o
+      WHERE o.id = organization_id
+        AND o.created_by = auth.uid()
+    )
+  );
+
 -- View with member count
 CREATE OR REPLACE VIEW public.organizations_with_member_count AS
 SELECT
